@@ -389,6 +389,12 @@ function App() {
   const offsetXRef = useRef(0);
   const offsetYRef = useRef(0);
 
+  // Camera shake references
+  const shakeXRef = useRef(0);
+  const shakeYRef = useRef(0);
+  const shakeDurationRef = useRef(0);
+  const shakeTimerRef = useRef(0);
+
   // Game constants - speed values now represent units per second rather than per frame
   const flapStrength = -400;
   const obstacleWidth = 100; // Scaled for game world size
@@ -563,8 +569,39 @@ function App() {
     context.webkitImageSmoothingEnabled = false;
     context.msImageSmoothingEnabled = false;
     
-    context.translate(offsetXRef.current, offsetYRef.current);
+    context.translate(offsetXRef.current + shakeXRef.current, offsetYRef.current + shakeYRef.current);
     context.scale(scaleRef.current, scaleRef.current);
+  }, []);
+
+  // Trigger camera shake effect
+  const triggerCameraShake = useCallback((intensity = 10, duration = 300) => {
+    shakeXRef.current = (Math.random() - 0.5) * intensity;
+    shakeYRef.current = (Math.random() - 0.5) * intensity;
+    shakeDurationRef.current = duration; // Duration in milliseconds
+    shakeTimerRef.current = 0; // Reset timer
+  }, []);
+
+  // Update camera shake (called in game loop)
+  const updateCameraShake = useCallback((deltaTime) => {
+    if (shakeDurationRef.current > 0) {
+      shakeTimerRef.current += deltaTime * 1000; // Convert to milliseconds
+      
+      if (shakeTimerRef.current < shakeDurationRef.current) {
+        // Calculate shake decay
+        const progress = shakeTimerRef.current / shakeDurationRef.current;
+        const intensity = (1 - progress) * 10; // Start at 10, decay to 0
+        
+        // Generate new random shake offset
+        shakeXRef.current = (Math.random() - 0.5) * intensity;
+        shakeYRef.current = (Math.random() - 0.5) * intensity;
+      } else {
+        // Shake duration completed, reset shake
+        shakeXRef.current = 0;
+        shakeYRef.current = 0;
+        shakeDurationRef.current = 0;
+        shakeTimerRef.current = 0;
+      }
+    }
   }, []);
 
   // Generate a new obstacle at a specific X position
@@ -1635,6 +1672,9 @@ function App() {
       // Update particle system
       updateParticleSystem(clampedDeltaTime);
       
+      // Update camera shake
+      updateCameraShake(clampedDeltaTime);
+      
       // Draw particles behind the player
       drawParticles(context);
 
@@ -1793,6 +1833,9 @@ function App() {
           // Play death sound when collision is detected
           playDeathSound();
           
+          // Trigger camera shake on collision
+          triggerCameraShake(15, 400); // Intensity 15, duration 400ms
+          
           setIsGameOver(true);
         }
       }
@@ -1833,7 +1876,7 @@ function App() {
         cancelAnimationFrame(animationFrameIdRef.current);
       }
     };
-  }, [isGameOver, isGameStarted, applyTransform, bufferObstacles, drawObstacles, checkPixelCollision, gravity, obstacleSpeed, drawGroundBackground, updateGroundBackground, drawMidGroundBackground, updateMidGroundBackground, drawCloudBackground, updateCloudBackground, updateParticleSystem, drawParticles]);
+  }, [isGameOver, isGameStarted, applyTransform, bufferObstacles, drawObstacles, checkPixelCollision, gravity, obstacleSpeed, drawGroundBackground, updateGroundBackground, drawMidGroundBackground, updateMidGroundBackground, drawCloudBackground, updateCloudBackground, updateParticleSystem, drawParticles, triggerCameraShake, updateCameraShake]);
 
   // Input handlers
   useEffect(() => {
