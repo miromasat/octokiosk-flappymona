@@ -20,7 +20,6 @@
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build"
   },
-  "homepage": "https://cameronfoxly.github.io/flappy-mona-react",
   "eslintConfig": {
     "extends": [
       "react-app",
