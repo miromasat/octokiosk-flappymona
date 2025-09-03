@@ -1000,11 +1000,11 @@ function App() {
           );
         }
       } else {
-        // Fallback to original colored rectangles if sprites not loaded
-        context.fillStyle = 'green';
+        // Fallback to themed colored rectangles if sprites not loaded
+        context.fillStyle = '#059669'; // Emerald green from the screenshot theme
         context.fillRect(obstacle.x, 0, obstacleWidth, obstacle.topHeight);
         
-        context.fillStyle = 'red';
+        context.fillStyle = '#8B45EA'; // Purple from the screenshot theme
         context.fillRect(
           obstacle.x,
           obstacle.bottomY,
@@ -1057,15 +1057,15 @@ function App() {
       if (playerSprites.frames[frameIndex]) {
         context.drawImage(playerSprites.frames[frameIndex], 100 - spriteSize/2, birdY - spriteSize/2, spriteSize, spriteSize);
       } else {
-        // Fallback if sprite not loaded
-        context.fillStyle = 'yellow';
+        // Fallback if sprite not loaded - use theme color
+        context.fillStyle = '#60A5FA'; // Blue from the screenshot theme
         context.beginPath();
         context.arc(100, birdY, 24, 0, Math.PI * 2);
         context.fill();
       }
     } else {
-      // Fallback if sprites not loaded
-      context.fillStyle = 'yellow';
+      // Fallback if sprites not loaded - use theme color
+      context.fillStyle = '#60A5FA'; // Blue from the screenshot theme
       context.beginPath();
       context.arc(100, birdY, 24, 0, Math.PI * 2);
       context.fill();
@@ -1479,8 +1479,8 @@ function App() {
   const drawParticles = useCallback((context) => {
     const particleSystem = particleSystemRef.current;
     
-    // Set drawing style for particles
-    context.fillStyle = 'white';
+    // Set drawing style for particles - use theme color
+    context.fillStyle = '#A855F7'; // Purple particle color matching theme
     
     // Draw each particle
     particleSystem.particles.forEach(particle => {
@@ -1718,8 +1718,8 @@ function App() {
         if (playerSprites.frames && playerSprites.frames[0]) {
           context.drawImage(playerSprites.frames[0], 100 - spriteSize/2, birdY - spriteSize/2, spriteSize, spriteSize);
         } else {
-          // Fallback if sprite not loaded
-          context.fillStyle = 'yellow';
+          // Fallback if sprite not loaded - use theme color
+          context.fillStyle = '#60A5FA'; // Blue from the screenshot theme
           context.beginPath();
           context.arc(100, birdY, 24, 0, Math.PI * 2);
           context.fill();
@@ -1743,8 +1743,8 @@ function App() {
                 spriteSize
               );
             } else {
-              // Fallback
-              context.fillStyle = 'red'; // Red circle for death
+              // Fallback - use theme color for death
+              context.fillStyle = '#DC2626'; // Red from theme for death
               context.beginPath();
               context.arc(100, deathY, 24, 0, Math.PI * 2);
               context.fill();
@@ -1767,8 +1767,8 @@ function App() {
               spriteSize
             );
           } else {
-            // Fallback if sprite not loaded
-            context.fillStyle = 'yellow';
+            // Fallback if sprite not loaded - use theme color
+            context.fillStyle = '#60A5FA'; // Blue from the screenshot theme
             context.beginPath();
             context.arc(100, birdY, 24, 0, Math.PI * 2);
             context.fill();
@@ -1935,7 +1935,7 @@ function App() {
             left: 0,
             width: '100vw',
             height: '100vh',
-            backgroundColor: 'black',
+            background: 'linear-gradient(135deg, #1a0a2e 0%, #16213e 25%, #0f3460 50%, #533483 75%, #7209b7 100%)',
             zIndex: 10,
             clipPath: assetsLoaded && fadeOut ? 'inset(100% 0 0 0)' : 'inset(0 0 0 0)',
             transition: 'clip-path 0.5s ease-in',
@@ -1961,14 +1961,16 @@ function App() {
             <div style={{ 
               width: '100%', 
               height: '20px', 
-              backgroundColor: '#333',
+              backgroundColor: 'rgba(255, 255, 255, 0.2)',
+              borderRadius: '10px',
               overflow: 'hidden',
               marginBottom: '10px'
             }}>
               <div style={{ 
                 width: `${(loadingProgress.images + loadingProgress.audio) / 2}%`, 
                 height: '100%', 
-                backgroundColor: '#ffffff',
+                background: 'linear-gradient(90deg, #8B45EA, #A855F7)',
+                borderRadius: '10px',
                 transition: 'width 0.3s ease-in-out'
               }}></div>
             </div>
@@ -2015,9 +2017,11 @@ function App() {
             fontFamily: 'PixeloidSans', // Updated font family
             textAlign: 'center',
             zIndex: 1,
-            backgroundColor: 'black', // Black bar background
-            padding: '10px', // Padding around text
-            borderRadius: '5px', // Optional: rounded corners for better aesthetics
+            backgroundColor: 'rgba(26, 10, 46, 0.9)', // Purple background matching theme
+            padding: '20px', // Increased padding
+            borderRadius: '15px', // More rounded corners
+            border: '2px solid rgba(139, 69, 234, 0.8)', // Purple border
+            boxShadow: '0 4px 20px rgba(139, 69, 234, 0.3)', // Purple glow
           }}
         >
           Tap to start flapping
@@ -2037,28 +2041,81 @@ function App() {
             fontFamily: 'PixeloidSans', // Updated font family
             textAlign: 'center',
             zIndex: 1,
-            backgroundColor: 'black', // Black bar background
-            padding: '10px', // Padding around text
-            borderRadius: '5px', // Optional: rounded corners for better aesthetics
+            backgroundColor: 'rgba(26, 10, 46, 0.9)', // Purple background matching theme
+            padding: '20px', // Increased padding
+            borderRadius: '15px', // More rounded corners
+            border: '2px solid rgba(139, 69, 234, 0.8)', // Purple border
+            boxShadow: '0 4px 20px rgba(139, 69, 234, 0.3)', // Purple glow
           }}
         >
           Game Over! <br /> Tap to Restart.
         </div>
       )}
 
-      {/* Black bar overlay for future controls */}
+      {/* Purple gradient bar overlay for future controls */}
       <div
         style={{
           position: 'absolute',
           top: 0,
           left: 0,
           width: '100%',
-          height: '60px', // Height of the black bar
-          backgroundColor: 'black',
+          height: '80px', // Increased height to accommodate the buttons
+          background: 'linear-gradient(180deg, rgba(26, 10, 46, 0.95) 0%, rgba(26, 10, 46, 0.8) 50%, rgba(26, 10, 46, 0.3) 100%)',
           zIndex: 2, // Ensure it appears above other elements
         }}
       ></div>
       
+      {/* Back to Octokiosk button */}
+      <div
+        className="back-button"
+        onClick={(e) => {
+          e.stopPropagation();
+          e.preventDefault();
+          window.location.href = 'https://octokiosk.com';
+        }}
+        onTouchEnd={(e) => {
+          e.stopPropagation();
+          e.preventDefault();
+          window.location.href = 'https://octokiosk.com';
+        }}
+        style={{
+          position: 'absolute',
+          top: '20px',
+          left: '20px',
+          padding: '8px 16px',
+          backgroundColor: 'rgba(139, 69, 234, 0.9)', // Purple background matching the theme
+          border: '2px solid rgba(255, 255, 255, 0.8)',
+          borderRadius: '8px',
+          color: 'white',
+          fontFamily: 'PixeloidSans',
+          fontSize: '16px',
+          cursor: 'pointer',
+          zIndex: 10,
+          display: 'flex',
+          alignItems: 'center',
+          gap: '8px',
+          touchAction: 'none',
+          boxShadow: '0 2px 10px rgba(0, 0, 0, 0.3)',
+          transition: 'all 0.2s ease',
+        }}
+        onMouseEnter={(e) => {
+          if (e.pointerType !== 'touch') {
+            e.target.style.backgroundColor = 'rgba(139, 69, 234, 1)';
+            e.target.style.transform = 'translateY(-1px)';
+          }
+        }}
+        onMouseLeave={(e) => {
+          if (e.pointerType !== 'touch') {
+            e.target.style.backgroundColor = 'rgba(139, 69, 234, 0.9)';
+            e.target.style.transform = 'translateY(0px)';
+          }
+        }}
+        aria-label="Back to Octokiosk"
+      >
+        <span style={{ fontSize: '14px' }}>←</span>
+        <span>Octokiosk</span>
+      </div>
+
       {/* Sound toggle button - improved for mobile */}
       {soundUILoaded && (
         <div
@@ -2076,20 +2133,21 @@ function App() {
           }}
           style={{
             position: 'absolute',
-            top: '10px',
-            left: '10px',
+            top: '20px',
+            right: '20px', // Moved to top right to make space for back button
             width: '40px',
             height: '40px',
             cursor: 'pointer',
             zIndex: 10, // Even higher z-index to ensure it's on top of everything
             padding: '5px', // Smaller padding for a tighter look
-            backgroundColor: 'rgba(0, 0, 0, 0.5)', // Semi-transparent background
+            backgroundColor: 'rgba(139, 69, 234, 0.7)', // Purple background matching theme
             borderRadius: '50%', // Circular shape
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             touchAction: 'none', // Prevent default touch actions
-            boxShadow: '0 0 5px rgba(0, 0, 0, 0.5)' // Smaller shadow for subtle effect
+            boxShadow: '0 0 8px rgba(139, 69, 234, 0.5)', // Purple glow effect
+            border: '2px solid rgba(255, 255, 255, 0.3)' // Subtle white border
           }}
           aria-label={soundEnabled ? "Mute sound" : "Unmute sound"}
         >
