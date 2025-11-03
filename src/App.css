@@ -5,9 +5,8 @@ body {
   justify-content: center;
   align-items: center;
   height: 100vh;
-  /* Purple/blue gradient background matching the screenshot */
-  background: linear-gradient(135deg, #1a0a2e 0%, #16213e 25%, #0f3460 50%, #533483 75%, #7209b7 100%);
-  color: white;
+  background-color: black; /* Set the background to black */
+  color: black; /* Set the text color to white */
 }
 
 canvas {
