@@ -917,7 +917,7 @@ function App() {
   // Handle keydown events
   const handleKeyDown = useCallback(
     (event) => {
-      if (event.code === "Space") {
+      if (event.code === "Space" || event.code === "Enter") {
         handleInput();
       }
     },
