@@ -2184,14 +2184,13 @@ function App() {
       <div
         style={{
           position: "absolute",
-          top: "0px",
-          right: "0px",
+          top: "40px", // Center in 80px bar (80/2 = 40)
+          right: "90px", // Increased from 80px to add more gap from sound button
+          transform: "translateY(-50%)", // Center vertically
           color: "white",
-          fontSize: "18px",
+          fontSize: "20px", // Increased from 18px to 20px
           fontFamily: "PixeloidSans",
           zIndex: 3, // Ensure it appears above the black bar
-          padding: "10px", // Padding around text
-          borderRadius: "5px", // Optional: rounded corners for better aesthetics
           display: "flex",
           flexDirection: "column",
           alignItems: "flex-end",
@@ -2214,11 +2213,11 @@ function App() {
             fontFamily: "PixeloidSans",
             textAlign: "center",
             zIndex: 1,
-            backgroundColor: "rgba(40, 40, 40, 0.9)",
+            backgroundColor: "rgba(0, 0, 0, 1.0)",
             padding: "20px",
-            borderRadius: "15px",
-            border: "2px solid rgba(128, 128, 128, 0.8)",
-            boxShadow: "0 4px 20px rgba(0, 0, 0, 0.3)",
+            borderRadius: "10px",
+            border: "2px solid rgba(255, 255, 255, 0.8)",
+            boxShadow: "3px 4px 0px rgba(0, 0, 0, 0.3)",
           }}
         >
           Tap to start flapping
@@ -2238,18 +2237,18 @@ function App() {
             fontFamily: "PixeloidSans",
             textAlign: "center",
             zIndex: 1,
-            backgroundColor: "rgba(40, 40, 40, 0.9)",
+            backgroundColor: "rgba(0, 0, 0, 0.9)",
             padding: "20px",
-            borderRadius: "15px",
-            border: "2px solid rgba(128, 128, 128, 0.8)",
-            boxShadow: "0 4px 20px rgba(0, 0, 0, 0.3)",
+            borderRadius: "10px",
+            border: "2px solid rgba(255, 255, 255, 0.8)",
+            boxShadow: "3px 4px 0px rgba(0, 0, 0, 0.3)",
           }}
         >
           Game Over! <br /> Tap to Restart.
         </div>
       )}
 
-      {/* Grayscale gradient bar overlay for future controls */}
+      {/* Black solid bar overlay for controls */}
       <div
         style={{
           position: "absolute",
@@ -2257,8 +2256,7 @@ function App() {
           left: 0,
           width: "100%",
           height: "80px",
-          background:
-            "linear-gradient(180deg, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0.8) 50%, rgba(0, 0, 0, 0.3) 100%)",
+          background: "rgba(0, 0, 0, 0.9)",
           zIndex: 2,
         }}
       ></div>
@@ -2314,7 +2312,7 @@ function App() {
         <span>Octokiosk</span>
       </div>
 
-      {/* Sound toggle button - moved below score */}
+      {/* Sound toggle button - moved to top bar inline with score */}
       {soundUILoaded && (
         <div
           className="sound-toggle-button"
@@ -2328,8 +2326,9 @@ function App() {
           }}
           style={{
             position: "absolute",
-            top: "70px",
+            top: "40px", // Center in 80px bar (80/2 = 40)
             right: "20px",
+            transform: "translateY(-50%)", // Center vertically
             width: "40px",
             height: "40px",
             cursor: "pointer",
