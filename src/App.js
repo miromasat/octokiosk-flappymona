@@ -703,7 +703,7 @@ function App() {
       const numInstances =
         Math.ceil(GAME_WIDTH / (ground.width * groundWidth)) + 10; // Use global groundWidth
       for (let i = 1; i < numInstances; i++) {
-        ground.positions.push(i * ground.width * groundWidth); // Use global groundWidth
+        ground.positions.push(i * ground.width * groundWidth - i * 1.0); // Subtract 1px per segment for overlap
       }
     }
   }, []);
@@ -719,7 +719,7 @@ function App() {
       const numInstances =
         Math.ceil(GAME_WIDTH / (midGround.width * groundWidth)) + 10; // Use same scaling as ground
       for (let i = 1; i < numInstances; i++) {
-        midGround.positions.push(i * midGround.width * groundWidth); // Use global groundWidth
+        midGround.positions.push(i * midGround.width * groundWidth - i * 1.0); // Subtract 1px per segment for overlap
       }
     }
   }, []);
@@ -754,7 +754,7 @@ function App() {
       const numInstances =
         Math.ceil(GAME_WIDTH / (ground.width * groundWidth)) + 10;
       for (let i = 1; i < numInstances; i++) {
-        ground.positions.push(i * ground.width * groundWidth);
+        ground.positions.push(i * ground.width * groundWidth - i * 1.0); // Subtract 1px per segment for overlap
       }
     }
   }, []);
@@ -767,7 +767,7 @@ function App() {
       const numInstances =
         Math.ceil(GAME_WIDTH / (midGround.width * groundWidth)) + 10;
       for (let i = 1; i < numInstances; i++) {
-        midGround.positions.push(i * midGround.width * groundWidth);
+        midGround.positions.push(i * midGround.width * groundWidth - i * 1.0); // Subtract 1px per segment for overlap
       }
     }
   }, []);
@@ -1652,7 +1652,7 @@ function App() {
           if (ground.positions[i] + ground.width * groundWidth < 0) {
             // Use global groundWidth
             const rightmostPos = Math.max(...ground.positions);
-            ground.positions[i] = rightmostPos + ground.width * groundWidth; // Use global groundWidth
+            ground.positions[i] = rightmostPos + ground.width * groundWidth - 1.0; // Subtract 1px to create overlap
           }
         }
       }
@@ -1677,7 +1677,7 @@ function App() {
           if (midGround.positions[i] + midGround.width * groundWidth < 0) {
             const rightmostPos = Math.max(...midGround.positions);
             midGround.positions[i] =
-              rightmostPos + midGround.width * groundWidth;
+              rightmostPos + midGround.width * groundWidth - 1.0; // Subtract 1px to create overlap
           }
         }
       }
@@ -2112,8 +2112,7 @@ function App() {
             left: 0,
             width: "100vw",
             height: "100vh",
-            background:
-              "linear-gradient(180deg, #e0e0e0 0%, #b0b0b0 50%, #808080 100%)",
+            background: "#000000",
             zIndex: 10,
             clipPath:
               assetsLoaded && fadeOut ? "inset(100% 0 0 0)" : "inset(0 0 0 0)",
@@ -2144,7 +2143,6 @@ function App() {
                 width: "100%",
                 height: "20px",
                 backgroundColor: "rgba(255, 255, 255, 0.2)",
-                borderRadius: "10px",
                 overflow: "hidden",
                 marginBottom: "10px",
               }}
@@ -2155,8 +2153,8 @@ function App() {
                     (loadingProgress.images + loadingProgress.audio) / 2
                   }%`,
                   height: "100%",
-                  background: "linear-gradient(90deg, #808080, #606060)",
-                  borderRadius: "10px",
+                  background: "#6d24aa",
+                  borderRadius: "1px",
                   transition: "width 0.3s ease-in-out",
                 }}
               ></div>
@@ -2184,14 +2182,13 @@ function App() {
       <div
         style={{
           position: "absolute",
-          top: "0px",
-          right: "0px",
+          top: "40px", // Center in 80px bar (80/2 = 40)
+          right: "90px", // Increased from 80px to add more gap from sound button
+          transform: "translateY(-50%)", // Center vertically
           color: "white",
-          fontSize: "18px",
+          fontSize: "20px", // Increased from 18px to 20px
           fontFamily: "PixeloidSans",
           zIndex: 3, // Ensure it appears above the black bar
-          padding: "10px", // Padding around text
-          borderRadius: "5px", // Optional: rounded corners for better aesthetics
           display: "flex",
           flexDirection: "column",
           alignItems: "flex-end",
@@ -2214,11 +2211,11 @@ function App() {
             fontFamily: "PixeloidSans",
             textAlign: "center",
             zIndex: 1,
-            backgroundColor: "rgba(40, 40, 40, 0.9)",
+            backgroundColor: "rgba(0, 0, 0, 0.9)",
             padding: "20px",
-            borderRadius: "15px",
-            border: "2px solid rgba(128, 128, 128, 0.8)",
-            boxShadow: "0 4px 20px rgba(0, 0, 0, 0.3)",
+            borderRadius: "10px",
+            border: "2px solid rgba(255, 255, 255, 0.8)",
+            boxShadow: "3px 4px 0px rgba(0, 0, 0, 0.3)",
           }}
         >
           Tap to start flapping
@@ -2238,18 +2235,18 @@ function App() {
             fontFamily: "PixeloidSans",
             textAlign: "center",
             zIndex: 1,
-            backgroundColor: "rgba(40, 40, 40, 0.9)",
+            backgroundColor: "rgba(0, 0, 0, 0.9)",
             padding: "20px",
-            borderRadius: "15px",
-            border: "2px solid rgba(128, 128, 128, 0.8)",
-            boxShadow: "0 4px 20px rgba(0, 0, 0, 0.3)",
+            borderRadius: "10px",
+            border: "2px solid rgba(255, 255, 255, 0.8)",
+            boxShadow: "3px 4px 0px rgba(0, 0, 0, 0.3)",
           }}
         >
           Game Over! <br /> Tap to Restart.
         </div>
       )}
 
-      {/* Grayscale gradient bar overlay for future controls */}
+      {/* Black solid bar overlay for controls */}
       <div
         style={{
           position: "absolute",
@@ -2257,8 +2254,7 @@ function App() {
           left: 0,
           width: "100%",
           height: "80px",
-          background:
-            "linear-gradient(180deg, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0.8) 50%, rgba(0, 0, 0, 0.3) 100%)",
+          background: "rgba(0, 0, 0, 0.9)",
           zIndex: 2,
         }}
       ></div>
@@ -2314,7 +2310,7 @@ function App() {
         <span>Octokiosk</span>
       </div>
 
-      {/* Sound toggle button - moved below score */}
+      {/* Sound toggle button - moved to top bar inline with score */}
       {soundUILoaded && (
         <div
           className="sound-toggle-button"
@@ -2328,8 +2324,9 @@ function App() {
           }}
           style={{
             position: "absolute",
-            top: "70px",
+            top: "40px", // Center in 80px bar (80/2 = 40)
             right: "20px",
+            transform: "translateY(-50%)", // Center vertically
             width: "40px",
             height: "40px",
             cursor: "pointer",
