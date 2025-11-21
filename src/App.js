@@ -1652,7 +1652,8 @@ function App() {
           if (ground.positions[i] + ground.width * groundWidth < 0) {
             // Use global groundWidth
             const rightmostPos = Math.max(...ground.positions);
-            ground.positions[i] = rightmostPos + ground.width * groundWidth - 1.0; // Subtract 1px to create overlap
+            ground.positions[i] =
+              rightmostPos + ground.width * groundWidth - 1.0; // Subtract 1px to create overlap
           }
         }
       }
@@ -2080,14 +2081,73 @@ function App() {
       handleInput();
     };
 
+    // Track button state to avoid repeated triggers
+    let button1WasPressed = false;
+
+    // Gamepad polling function
+    const checkGamepadButton1 = () => {
+      const gamepads = navigator.getGamepads();
+
+      // Check each connected gamepad
+      for (let i = 0; i < gamepads.length; i++) {
+        if (gamepads[i]) {
+          const button1 = gamepads[i].buttons[1];
+
+          // Check if button 1 is pressed
+          if (button1.pressed) {
+            // Only trigger if button wasn't pressed in previous frame
+            if (!button1WasPressed) {
+              console.log("Button 1 pressed!");
+              console.log("Pressure value:", button1.value);
+              handleInput();
+              button1WasPressed = true;
+            }
+            return;
+          }
+        }
+      }
+      // Button is not pressed anymore
+      button1WasPressed = false;
+    };
+
+    // Gamepad loop using requestAnimationFrame
+    let gamepadLoopId;
+    const gamepadLoop = () => {
+      checkGamepadButton1();
+      gamepadLoopId = requestAnimationFrame(gamepadLoop);
+    };
+
+    // Start the gamepad loop
+    gamepadLoop();
+
+    // Optional: Listen for gamepad connection events
+    const handleGamepadConnected = (e) => {
+      console.log("Gamepad connected:", e.gamepad.id);
+    };
+
+    const handleGamepadDisconnected = (e) => {
+      console.log("Gamepad disconnected");
+    };
+
     window.addEventListener("keydown", handleKeyDown);
     window.addEventListener("mousedown", handleMouseDown);
     window.addEventListener("touchstart", handleTouchStart, { passive: false });
+    window.addEventListener("gamepadconnected", handleGamepadConnected);
+    window.addEventListener("gamepaddisconnected", handleGamepadDisconnected);
 
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
       window.removeEventListener("mousedown", handleMouseDown);
       window.removeEventListener("touchstart", handleTouchStart);
+      window.removeEventListener("gamepadconnected", handleGamepadConnected);
+      window.removeEventListener(
+        "gamepaddisconnected",
+        handleGamepadDisconnected
+      );
+      // Cancel the gamepad animation loop
+      if (gamepadLoopId) {
+        cancelAnimationFrame(gamepadLoopId);
+      }
     };
   }, [handleKeyDown, handleInput]);
 
